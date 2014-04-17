@@ -94,7 +94,7 @@ vector<int> metric_tsp(int n, vector< vector<float> >& cost)
   vector<Edge> tree = mst(n, cost);
 
   // adjacency lists relative to the tree subgraph
-  vector<int> adjacency_lists[n];
+  std::vector<vector<int> > adjacency_lists(n);
 
   for (int i = 0; i < n - 1; ++i) {
     int u = tree[i].head;
@@ -187,38 +187,40 @@ vector<int> tsp(int n, vector< vector<float> >& cost)
 
 int main()
 {
-  int n = 4;
+  // int n = 4;
+  // 
+  // vector< vector<float> > c(n, vector<float>(n));
+  // 
+  // c[0][1] = c[1][0] = 1;
+  // c[0][2] = c[2][0] = 3;
+  // c[0][3] = c[3][0] = 2;
+  // c[1][2] = c[2][1] = 2;
+  // c[1][3] = c[3][1] = 4;
+  // c[2][3] = c[3][2] = 3;
+#include "data.cpp"
 
-  vector< vector<float> > c(n, vector<float>(n));
-
-  c[0][1] = c[1][0] = 1;
-  c[0][2] = c[2][0] = 3;
-  c[0][3] = c[3][0] = 2;
-  c[1][2] = c[2][1] = 2;
-  c[1][3] = c[3][1] = 4;
-  c[2][3] = c[3][2] = 3;
-
-  cout << endl << "Metric TSP approximation:" << endl << "Path: ";
+  cout << endl << "{\"path\": [";
   vector<int> tour = metric_tsp(n, c);
-  for (int i = 0; i <= n; i++)
-    cout << tour[i % n] << " ";
-  cout << endl;
-  cout << "Cost: ";
+  for (int i = 0; i <= n; i++) {
+    cout << tour[i % n];
+    if (i < n) cout << ", ";
+  }
+  cout << "], \"cost\": ";
   float total_cost = 0;
   for (int i = 1; i <= n; ++i)
     total_cost += c[tour[i - 1]][tour[i % n]];
-  cout << total_cost << endl << endl;
+  cout << total_cost << "}";
 
-  cout << "Exact exponential solution:" << endl << "Path: ";
-  tour = tsp(n, c);
-  for (int i = 0; i <= n; i++)
-    cout << tour[i % n] << " ";
-  cout << endl;
-  cout << "Cost: ";
-  total_cost = 0;
-  for (int i = 1; i <= n; ++i)
-    total_cost += c[tour[i - 1]][tour[i % n]];
-  cout << total_cost << endl << endl;
+  // cout << "Exact exponential solution:" << endl << "Path: ";
+  // tour = tsp(n, c);
+  // for (int i = 0; i <= n; i++)
+  //   cout << tour[i % n] << " ";
+  // cout << endl;
+  // cout << "Cost: ";
+  // total_cost = 0;
+  // for (int i = 1; i <= n; ++i)
+  //   total_cost += c[tour[i - 1]][tour[i % n]];
+  // cout << total_cost << endl << endl;
 
   return 0;
 }
